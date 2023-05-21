@@ -5,42 +5,8 @@ from PIL import Image
 from transformers import pipeline
 
 pipe = pipeline(
-    task="image-classification", model="microsoft/dit-base-finetuned-rvlcdip"
+    task="image-classification", model="sooks/ai-human3"
 )
-
-
-def classify_pdf(filename: str = "filename.pdf"):
-    """
-    The classify_pdf function takes a pdf file as input and returns the classification of the first page.
-    The function uses tesseract to extract text from the image of each page in a pdf file.
-    The function also converts each page into an image using pdf2image convert command, which is then used by tesseract.
-    
-    :param filename:str="filename.pdf": Used to Specify the name of the pdf file that is to be classified.
-    :return: A classification for the pdf file.
-    
-    :doc-author: Ifeanyi Nneji
-    """
-    images = convert_from_path(
-        "filename.pdf",
-        dpi=500,
-        single_file=True,
-        jpegopt="optimized",
-        output_file="image.jpg"
-    )
-    # Saving pages in jpeg format
-    for page in images:
-        page.save("image.jpg", "JPEG")
-    print("Converted pdf")
-    image = Image.open("image.jpg")
-    classification = pipe(image)
-    if os.path.exists("image.jpg"):
-        os.remove("image.jpg")
-    if os.path.exists("filename.pdf"):
-        os.remove("filename.pdf")
-    if os.path.exists("images/image.jpg.ppm"):
-        os.remove("images/image.jpg.ppm")
-    return classification
-
 
 def classify_image(image: str = "images.jpg"):
     """
